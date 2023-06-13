@@ -5,7 +5,7 @@ import Filter from './Filter/Filter';
 import { useState, useEffect } from 'react';
 import Notiflix from 'notiflix';
 
-const App = () =>  {
+const App = () => {
   const [contacts, setContacts] = useState(() => {
     return JSON.parse(localStorage.getItem('contacts')) ?? [];
   });
@@ -21,44 +21,42 @@ const App = () =>  {
     );
 
     if (isExistingContact) {
-      Notiflix.Notify.failure('Цей контакт уже було додано')
+      Notiflix.Notify.failure('Цей контакт уже було додано');
       return;
     }
 
     setContacts(prevContacts => [...prevContacts, newContact]);
     Notiflix.Notify.success('Контакт було успішно додано');
   };
-  
 
   const handleDeleteContact = contactId => {
-    setContacts(prevArray => prevArray.filter(contact => contact.id !== contactId))
+    setContacts(prevArray =>
+      prevArray.filter(contact => contact.id !== contactId)
+    );
   };
-  
+
   const handleFilterChange = event => {
     setFilter(event.target.value);
-  }
+  };
 
-    const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
-    return (
-        <div>
-          <h1>Phonebook</h1>
-          <ContactForm
-            contacts={contacts}
-            onAddContact={handleAddContact}
-          />
+  return (
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm contacts={contacts} onAddContact={handleAddContact} />
 
-          <h2>Contacts</h2>
-          <Filter value={filter} onChange={handleFilterChange} />
-          <ContactList
-            contacts={filteredContacts}
-            onDeleteContact={handleDeleteContact}
-          />
-        </div>    
-    );
-  }
+      <h2>Contacts</h2>
+      <Filter value={filter} onChange={handleFilterChange} />
+      <ContactList
+        contacts={filteredContacts}
+        onDeleteContact={handleDeleteContact}
+      />
+    </div>
+  );
+};
 
 App.propTypes = {
   contacts: PropTypes.arrayOf(
